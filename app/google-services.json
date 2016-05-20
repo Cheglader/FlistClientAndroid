@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "738511569331",
+    "project_id": "api-project-738511569331"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738511569331:android:2ee403f00f9abc58",
+        "android_client_info": {
+          "package_name": "com.wannabemutants.flistapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738511569331-o0ids08rvu0gl0ks61djkeab7am3gaea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wannabemutants.flistapp",
+            "certificate_hash": "064C83D21241BAB76D1F2A2F3F89C54FC0773FBC"
+          }
+        },
+        {
+          "client_id": "738511569331-dgm6vbjde5qpcsnfutgk91ff4g6vufu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcF2zVRvNRuG2TXp58UBdH41NGIe3kSfc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
