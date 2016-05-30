@@ -1,7 +1,8 @@
 package com.wannabemutants.flistapp.view.fragment;
 
-import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,9 +19,8 @@ import com.wannabemutants.flistapp.FlistAppApplication;
 import com.wannabemutants.flistapp.R;
 import com.wannabemutants.flistapp.data.DataManager;
 import com.wannabemutants.flistapp.model.Category;
-import com.wannabemutants.flistapp.model.Restaurant;
 import com.wannabemutants.flistapp.util.DialogFactory;
-import com.wannabemutants.flistapp.view.adapter.RestaurantAdapter;
+import com.wannabemutants.flistapp.view.adapter.CategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
-
-public class RestaurantsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -54,28 +53,25 @@ public class RestaurantsFragment extends Fragment implements SwipeRefreshLayout.
     public static final int DEFAULT_CATEGORY = 0;
 
     private DataManager mDataManager;
-    private RestaurantAdapter mCategoryAdapter;
+    private CategoryAdapter mCategoryAdapter;
     private CompositeSubscription mSubscriptions;
-    private List<Restaurant> mRestaurants;
-    private String mUser;
+    private List<Category> mCategories;
 
-    public static RestaurantsFragment newInstance(String user) {
-        RestaurantsFragment storiesFragment = new RestaurantsFragment();
+    public static CategoriesFragment newInstance() {
+        CategoriesFragment categoriesFragment = new CategoriesFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_USER, user);
-        storiesFragment.setArguments(args);
-        return storiesFragment;
+        categoriesFragment.setArguments(args);
+        return categoriesFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSubscriptions = new CompositeSubscription();
-        mRestaurants = new ArrayList<>();
+        mCategories = new ArrayList<>();
         mDataManager = FlistAppApplication.get(getActivity()).getComponent().dataManager();
         Bundle bundle = getArguments();
-        if (bundle != null) mUser = bundle.getString(ARG_USER, null);
-        mCategoryAdapter = new RestaurantAdapter(getActivity(), mUser != null);
+        mCategoryAdapter = new CategoryAdapter(getActivity());
     }
 
     @Override
@@ -99,12 +95,8 @@ public class RestaurantsFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         mSubscriptions.unsubscribe();
-        if (mCategoryAdapter != null) mCategoryAdapter.setItems(new ArrayList<Restaurant>());
-        if (mUser != null) {
-            //getUserStories();
-        } else {
+        if (mCategoryAdapter != null) mCategoryAdapter.setItems(new ArrayList<Category>());
             getTestRestaurants();
-        }
     }
 
     @OnClick(R.id.button_try_again)
@@ -117,17 +109,17 @@ public class RestaurantsFragment extends Fragment implements SwipeRefreshLayout.
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
-            if (mUser != null) {
+            /*if (mUser != null) {
                 actionBar.setTitle(mUser);
                 actionBar.setDisplayHomeAsUpEnabled(true);
-            }
+            }*/
         }
     }
 
     private void setupRecyclerView() {
         mListPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
         mListPosts.setHasFixedSize(true);
-        mCategoryAdapter.setItems(mRestaurants);
+        mCategoryAdapter.setItems(mCategories);
         mListPosts.setAdapter(mCategoryAdapter);
     }
 
@@ -148,6 +140,7 @@ public class RestaurantsFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     private void getTestRestaurants() {
+        /*
         mRestaurants.add(new Restaurant("Zen"));
         mRestaurants.add(new Restaurant("Chick-Fil-A"));
         mRestaurants.add(new Restaurant("Fat Sal's"));
@@ -155,7 +148,32 @@ public class RestaurantsFragment extends Fragment implements SwipeRefreshLayout.
         mRestaurants.add(new Restaurant("Wendy's"));
         mRestaurants.add(new Restaurant("Taco Cabana"));
         mRestaurants.add(new Restaurant("Franklin's BBQ"));
-        mRestaurants.add(new Restaurant("The Salt Lick"));
+        mRestaurants.add(new Restaurant("The Salt Lick"));*/
+        mSubscriptions.add(mDataManager.getAllCategories()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(mDataManager.getScheduler())
+                .subscribe(new Subscriber<List<Category>>() {
+                    @Override
+                    public void onCompleted() { }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideLoadingViews();
+                        Timber.e("There was a problem loading the top stories " + e);
+                        e.printStackTrace();
+                        DialogFactory.createSimpleOkErrorDialog(
+                                getActivity(),
+                                getString(R.string.error_stories)
+                        ).show();
+                    }
+
+                    @Override
+                    public void onNext(List<Category> categories) {
+                        hideLoadingViews();
+                        mCategoryAdapter.addItems(categories);
+                    }
+                }));
+        hideLoadingViews();
 
     }
     /*

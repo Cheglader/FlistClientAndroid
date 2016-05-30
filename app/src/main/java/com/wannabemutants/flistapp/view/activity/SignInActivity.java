@@ -22,6 +22,7 @@ import com.google.android.gms.common.api.Status;
 import com.wannabemutants.flistapp.R;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -42,16 +43,13 @@ public class SignInActivity extends AppCompatActivity implements
     @Bind(R.id.sign_in_button)
     SignInButton signInButton;
 
-    @Bind(R.id.sign_out_and_disconnect)
-    Button signOutDisconnect;
-
     private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_sign_in);
+        ButterKnife.bind(this);
         // [START configure_signin]
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.

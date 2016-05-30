@@ -2,9 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/hn_orange</item>
-        <item name="colorPrimaryDark">@color/hn_orange_dark</item>
-        <item name="colorAccent">@color/hn_orange_lighter</item>
+        <item name="colorPrimary">@color/flist_orange</item>
+        <item name="colorPrimaryDark">@color/flist_orange</item>
+        <item name="colorAccent">@color/flist_orange</item>
         <item name="android:alertDialogTheme">@style/AlertDialogStyle</item>
         <item name="android:itemTextAppearance">@style/OptionsMenuTextColor</item>
         <item name="android:textColorPrimary">@color/black_87pc</item>
@@ -28,7 +28,7 @@
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/DialogTitleText</item>
-        <item name="colorAccent">@color/hn_orange_lighter</item>
+        <item name="colorAccent">@color/flist_orange</item>
     </style>
 
     <style name="DialogTitleText">

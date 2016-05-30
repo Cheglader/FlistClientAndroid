@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.wannabemutants.flistapp.R;
+import com.wannabemutants.flistapp.view.fragment.CategoriesFragment;
 import com.wannabemutants.flistapp.view.fragment.RestaurantsFragment;
 
 public class MainActivity extends BaseActivity {
@@ -16,8 +17,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        addRestaurantsFragment();
-
+        addCategoriesFragment();
     }
 
     @Override
@@ -35,6 +35,13 @@ public class MainActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void addCategoriesFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, new CategoriesFragment())
+                .commit();
     }
 
     private void addRestaurantsFragment() {

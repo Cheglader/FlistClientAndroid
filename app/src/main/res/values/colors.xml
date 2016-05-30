@@ -20,4 +20,8 @@
     <color name="super_light_grey">#FAFAFA</color>
     <color name="line_grey">#D7D7D7</color>
     <color name="black_87pc">#DD000000</color>
+
+    <color name="flist_orange">#D95032</color>
+    <color name="flist_granite">#46403F</color>
+    <color name="flist_offwhite">#E7E5E5</color>
 </resources>

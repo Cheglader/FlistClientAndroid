@@ -7,6 +7,7 @@ import com.wannabemutants.flistapp.FlistAppApplication;
 import com.wannabemutants.flistapp.data.remote.FlistService;
 import com.wannabemutants.flistapp.injection.component.DaggerDataManagerComponent;
 import com.wannabemutants.flistapp.injection.module.DataManagerModule;
+import com.wannabemutants.flistapp.model.Category;
 
 import java.util.List;
 
@@ -49,6 +50,10 @@ public class DataManager {
 
     public Scheduler getScheduler() {
         return mSubscribeScheduler;
+    }
+
+    public Observable<List<Category>> getAllCategories() {
+        return mFlistService.getAllCategories();
     }
 
     /*
