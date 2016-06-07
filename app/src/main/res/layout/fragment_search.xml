@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/bg_light_grey">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/text_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@{viewModel.categoryName}"
+            android:textColor="@color/black_87pc"
+            android:textSize="@dimen/text_large_title"
+            android:onClick="@{viewModel.onClickCategory}"/>
+        <EditText
+            android:id="@+id/restaurant_search_input"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/restaurant_search"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:id="@+id/progress_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <include layout="@layout/layout_offline"/>
+
+</RelativeLayout>
+
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_scrollFlags="scroll|enterAlways"
+        android:background="@color/flist_orange"
+        app:theme="@style/AppTheme.ActionBar"/>
+
+</android.support.design.widget.AppBarLayout>
+
+</android.support.design.widget.CoordinatorLayout>

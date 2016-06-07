@@ -37,9 +37,6 @@ public class SignInActivity extends AppCompatActivity implements
 
     private GoogleApiClient mGoogleApiClient;
 
-    @Bind(R.id.status)
-    TextView mStatusTextView;
-
     @Bind(R.id.sign_in_button)
     SignInButton signInButton;
 

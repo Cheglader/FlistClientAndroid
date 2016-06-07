@@ -63,8 +63,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Bindin
     }
 
     public void addItems(List<Category> categories) {
-        mCategories.addAll(categories);
-        notifyItemInserted(mCategories.size() - 1);
+        for (Category category : categories) {
+            this.addItem(category);
+        }
     }
 
     public static class BindingHolder extends RecyclerView.ViewHolder {

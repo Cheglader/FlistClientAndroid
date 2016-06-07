@@ -2,7 +2,7 @@
     <string name="app_name">FlistApp</string>
     <string name="title_activity_sign_in">SignInActivity</string>
 
-    <string name="title_text">Google Sign-In\nQuickstart</string>
+    <string name="title_text">Google Sign-In</string>
 
     <!-- Sign-in status messages -->
     <string name="signed_in_fmt">Signed in as: %s</string>
@@ -71,4 +71,6 @@
     <string name="dialog_neutral_button_text">Later</string>
     <string name="dialog_negative_button_text">No, thanks</string>
     <string name="dialog_positive_button_text">Rate</string>
+
+    <string name="restaurant_search">Search Restaurants</string>
 </resources>

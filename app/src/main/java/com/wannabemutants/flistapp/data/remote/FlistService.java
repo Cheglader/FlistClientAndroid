@@ -2,10 +2,13 @@ package com.wannabemutants.flistapp.data.remote;
 
 import com.wannabemutants.flistapp.model.Category;
 import com.wannabemutants.flistapp.model.Restaurant;
+import com.wannabemutants.flistapp.model.TextEntry;
 
 import java.util.List;
 
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 import rx.Observable;
 
@@ -25,6 +28,10 @@ public interface FlistService {
 
     @GET("/categories/?format=json")
     Observable<List<Category>> getAllCategories();
+
+    @POST("/text_entries/")
+    Observable<TextEntry> createTextEntry(@Body TextEntry textEntry);
+
     /**
      * Return a list of a users post IDs.
      */
