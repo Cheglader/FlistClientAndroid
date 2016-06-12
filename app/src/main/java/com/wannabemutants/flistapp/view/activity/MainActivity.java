@@ -9,6 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.wannabemutants.flistapp.R;
 import com.wannabemutants.flistapp.view.fragment.CategoriesFragment;
 import com.wannabemutants.flistapp.view.fragment.RestaurantsFragment;
+import com.wannabemutants.flistapp.view.fragment.SearchResultsFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -48,6 +49,13 @@ public class MainActivity extends BaseActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, new RestaurantsFragment())
+                .commit();
+    }
+
+    public void addSearchResultsFragment(String query) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, SearchResultsFragment.newInstance(query))
                 .commit();
     }
 }

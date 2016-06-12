@@ -1,6 +1,10 @@
 package com.wannabemutants.flistapp.view.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -11,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +24,7 @@ import com.wannabemutants.flistapp.FlistAppApplication;
 import com.wannabemutants.flistapp.R;
 import com.wannabemutants.flistapp.data.DataManager;
 import com.wannabemutants.flistapp.model.Restaurant;
+import com.wannabemutants.flistapp.view.activity.MainActivity;
 import com.wannabemutants.flistapp.view.adapter.RestaurantAdapter;
 
 import java.util.ArrayList;
@@ -46,6 +52,9 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Bind(R.id.text_welcome)
     TextView mTextWelcome;
 
+    @Bind(R.id.restaurant_search_input)
+    EditText mSearchInput;
+
     private DataManager mDataManager;
     private RestaurantAdapter mCategoryAdapter;
     private CompositeSubscription mSubscriptions;
@@ -63,10 +72,8 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSubscriptions = new CompositeSubscription();
-        mDataManager = FlistAppApplication.get(getActivity()).getComponent().dataManager();
-        Bundle bundle = getArguments();
-        if (bundle != null) mUser = bundle.getString(ARG_USER, null);
+        // TODO
+        mTextWelcome.setText("Welcome ");
         mCategoryAdapter = new RestaurantAdapter(getActivity(), mUser != null);
     }
 
@@ -161,5 +168,20 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mListPosts.setVisibility(isOffline ? View.GONE : View.VISIBLE);
         mProgressBar.setVisibility(isOffline ? View.GONE : View.VISIBLE);
     }
+
+    public View.OnClickListener onClickSearch() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String search_query = mSearchInput.getText().toString();
+                launchSearchActivity(search_query);
+            }
+        };
+    }
+
+    private void launchStoryActivity(String search_query) {
+        ((MainActivity)getActivity()).addSearchResultsFragment(search_query);
+    }
+
 
 }

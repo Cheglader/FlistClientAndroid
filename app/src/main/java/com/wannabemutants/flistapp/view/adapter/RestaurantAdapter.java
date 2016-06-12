@@ -20,11 +20,9 @@ import java.util.List;
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.BindingHolder> {
     private List<Restaurant> mRestaurants;
     private Context mContext;
-    private boolean mIsUserPosts;
 
-    public RestaurantAdapter(Context context, boolean isUserPosts) {
+    public RestaurantAdapter(Context context) {
         mContext = context;
-        mIsUserPosts = isUserPosts;
         mRestaurants = new ArrayList<>();
     }
 
