@@ -8,6 +8,7 @@ import com.wannabemutants.flistapp.data.remote.FlistService;
 import com.wannabemutants.flistapp.injection.component.DaggerDataManagerComponent;
 import com.wannabemutants.flistapp.injection.module.DataManagerModule;
 import com.wannabemutants.flistapp.model.Category;
+import com.wannabemutants.flistapp.model.Restaurant;
 
 import java.util.List;
 
@@ -54,6 +55,10 @@ public class DataManager {
 
     public Observable<List<Category>> getAllCategories() {
         return mFlistService.getAllCategories();
+    }
+
+    public Observable<List<Restaurant>> getSearchQuery(String query, double lat, double lng) {
+        return mFlistService.getRestaurantsSearch(query, lat, lng);
     }
 
     /*

@@ -1,7 +1,13 @@
 package com.wannabemutants.flistapp.view.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.wannabemutants.flistapp.FlistAppApplication;
 import com.wannabemutants.flistapp.R;
 import com.wannabemutants.flistapp.data.DataManager;
@@ -32,7 +41,8 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by cheglader on 6/10/16.
  */
-public class SearchResultsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class SearchResultsFragment extends Fragment implements
+        SwipeRefreshLayout.OnRefreshListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -57,6 +67,8 @@ public class SearchResultsFragment extends Fragment implements SwipeRefreshLayou
     private List<Restaurant> mRestaurants;
     private String mQuery;
 
+    private GoogleApiClient mGoogleApiClient;
+
     public static SearchResultsFragment newInstance(String query) {
         SearchResultsFragment searchResultsFragment = new SearchResultsFragment();
         Bundle args = new Bundle();
@@ -76,6 +88,14 @@ public class SearchResultsFragment extends Fragment implements SwipeRefreshLayou
             mQuery = bundle.getString(ARG_QUERY, null);
         }
         mRestaurantAdapter = new RestaurantAdapter(getActivity());
+
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
         // TODO design change stuff
     }
 
@@ -83,6 +103,7 @@ public class SearchResultsFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_restaurants, container, false);
         ButterKnife.bind(this, fragmentView);
+        mGoogleApiClient.connect();
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.hn_orange);
         setupToolbar();
@@ -94,6 +115,7 @@ public class SearchResultsFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mGoogleApiClient.disconnect();
         mSubscriptions.unsubscribe();
     }
 
@@ -101,7 +123,7 @@ public class SearchResultsFragment extends Fragment implements SwipeRefreshLayou
     public void onRefresh() {
         mSubscriptions.unsubscribe();
         if (mRestaurantAdapter != null) mRestaurantAdapter.setItems(new ArrayList<Restaurant>());
-        getSearchQueryResults();
+        getSearchQueryResults(getCurrentLocation());
     }
 
     @OnClick(R.id.button_try_again)
@@ -131,14 +153,25 @@ public class SearchResultsFragment extends Fragment implements SwipeRefreshLayou
     private void loadResultsIfNetworkConnected() {
         if (DataUtils.isNetworkAvailable(getActivity())) {
             showHideOfflineLayout(false);
-            getSearchQueryResults();
+            getSearchQueryResults(getCurrentLocation());
         } else {
             showHideOfflineLayout(true);
         }
     }
 
-    private void getSearchQueryResults() {
+    private void getSearchQueryResults(Location current_location) {
+        if(current_location != null) {
+            mDataManager.getSearchQuery(mQuery, current_location.getLatitude(), current_location.getLongitude());
+        } else {
 
+        }
+    }
+
+    private Location getCurrentLocation() {
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+        return null;
     }
     /*
     private void getTopStories() {
@@ -205,4 +238,18 @@ public class SearchResultsFragment extends Fragment implements SwipeRefreshLayou
         mProgressBar.setVisibility(isOffline ? View.GONE : View.VISIBLE);
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

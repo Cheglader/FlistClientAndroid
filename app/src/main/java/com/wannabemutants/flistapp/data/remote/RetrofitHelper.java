@@ -2,8 +2,10 @@ package com.wannabemutants.flistapp.data.remote;
 
 import com.google.gson.GsonBuilder;
 
-import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by cheglader on 5/15/16.
@@ -11,10 +13,14 @@ import retrofit.converter.GsonConverter;
 public class RetrofitHelper {
 
     public FlistService newFlistService() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(FlistService.ENDPOINT)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setConverter(new GsonConverter(new GsonBuilder().create()))
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+        Retrofit restAdapter = new Retrofit.Builder()
+                .baseUrl(FlistService.ENDPOINT)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return restAdapter.create(FlistService.class);
     }

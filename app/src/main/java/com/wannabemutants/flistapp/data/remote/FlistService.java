@@ -6,10 +6,11 @@ import com.wannabemutants.flistapp.model.TextEntry;
 
 import java.util.List;
 
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Path;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -23,8 +24,11 @@ public interface FlistService {
      */
     //@GET("/topstories.json")
     //Observable<List<Long>> getTopStories();
-    @GET("/restaurants?query={search_query}&format=json")
-    Observable<List<Restaurant>> getRestaurantsSearch(@Path("search_query") String search_query);
+    @GET("/restaurants/?format=json")
+    Observable<List<Restaurant>> getRestaurantsSearch(
+            @Query("query") String query,
+            @Query("lat") double lat,
+            @Query("lng") double lng);
 
     @GET("/categories/?format=json")
     Observable<List<Category>> getAllCategories();
